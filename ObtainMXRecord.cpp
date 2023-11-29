@@ -4,6 +4,15 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+/*
+This example uses the getaddrinfo function to perform a DNS query for the specified domain. 
+The ai_canonname field of the returned addrinfo structure contains the canonical name of the queried domain. 
+The loop iterates through the results and prints the canonical name and the first MX record found.
+
+Make sure to replace the domain variable with the desired domain for which you want to query MX records.
+Note: This example assumes that the domain has MX records and that the DNS resolution is successful. Error handling and additional checks may be necessary for a production environment.
+*/
+
 void mxQuery(const char *domain) {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
