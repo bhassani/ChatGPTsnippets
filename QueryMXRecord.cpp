@@ -4,6 +4,12 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+/*
+This example constructs an MX query for the specified domain and sends it to the specified DNS server using the getaddrinfo function. 
+Note that not all DNS servers support the direct querying of MX records in this way, and some may require specific protocols like DNS over UDP or DNS over TCP. 
+Make sure to replace the domain and dnsServer variables with your desired values.
+*/
+
 void mxDnsQuery(const char *domain, const char *dnsServer) {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
