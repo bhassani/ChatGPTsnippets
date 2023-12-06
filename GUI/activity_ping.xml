@@ -1,3 +1,4 @@
+<!-- Make sure to add the necessary permissions in the AndroidManifest.xml file to allow the app to access the network. -->
 <!-- res/layout/activity_ping.xml -->
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
