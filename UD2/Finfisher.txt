@@ -1,0 +1,44 @@
+Get NTDLL module handle
+GetModuleHandleA NTDLL -> locate KiUserExceptionDIspatcher
+Virtualprotect ( 0x10 bytes )
+Replaces the bytes with:
+
+virtualprotect on KiUserExceptionDispatcher
+edit:
+_ASM { 68 addr to NtContinue }
+_asm { C3 }
+PUSH 402C1
+RETN
+
+causes crash with UD2 opcodes
+_asm {
+	ud0
+	ud1
+	ud2
+}
+
+reverses the patched bytes to original values stored in stack
+Virtualprotect ( 0x10 bytes 
+ PAGE_EXECUTE_READ );
+
+
+ZwSetInformationThread(GetCurrentProcess(), ThreadHideFromDebugger, NULL, 0);
+
+ZwQueryInformationProcess(curProc, ProcessDebugPort, &debugPort, sizeof(ULONG_PTR);
+ZwQueryInformationProcess(curProc, processDebugObjectHandle, &debugObjHandle, sizeof(ULONG_PTR);
+
+VirtualProtectEx(curProc, &DbgBreakPoint, 1, PAGE_RWX, &oldProtect);
+DbgBreakPoint[0] = 0x90; //NOP instead of INT 3
+
+
+
+
+
+
+
+
+
+
+
+
+
