@@ -31,10 +31,24 @@ int main() {
 
     // Change the protection of the memory region to allow writing
     DWORD oldProtect;
+
+    //if (!VirtualProtect(originalKiUserExceptionDispatcher, 16, PAGE_EXECUTE_READWRITE, &oldProtect)) {
     if (!VirtualProtect(originalKiUserExceptionDispatcher, sizeof(newInstructions), PAGE_EXECUTE_READWRITE, &oldProtect)) {
         printf("Failed to change memory protection\n");
         return 1;
     }
+
+    // Copy the first 16 bytes of assembly instructions
+    BYTE originalBytes[16];
+    memcpy(originalBytes, originalKiUserExceptionDispatcher, 16);
+
+    // Print the copied bytes
+    printf("First 16 bytes of KiUserExceptionDispatcher:\n");
+    for (int i = 0; i < 16; i++) {
+        printf("%02X ", originalBytes[i]);
+    }
+    printf("\n");
+	
 
     //DEV TESTING HERE
     /*
@@ -65,10 +79,23 @@ int main() {
     //END DEV TESTING
 
     // Replace the beginning of KiUserExceptionDispatcher with newInstructions
-    //memcpy(originalKiUserExceptionDispatcher, newInstructions, sizeof(newInstructions));
+    memcpy(originalKiUserExceptionDispatcher, newInstructions, sizeof(newInstructions));
 
+   //trigger the exception
+   __asm
+	{
+		ud0
+		ud1
+		ud2
+	}
+
+    // Restore the original bytes of KiUserExceptionDispatcher with the old instructions
+    memcpy(originalKiUserExceptionDispatcher, originalBytes, sizeof(originalBytes));
+	
     // Restore the original memory protection
     DWORD dummy;
+    // Restore original memory protection
+    //if (!VirtualProtect(originalKiUserExceptionDispatcher, 16, oldProtect, &oldProtect)) {
     if (!VirtualProtect(originalKiUserExceptionDispatcher, sizeof(newInstructions), oldProtect, &dummy)) {
         printf("Failed to restore memory protection\n");
         return 1;
@@ -185,8 +212,6 @@ int find_address_ntContinue()
     }
     return 0;
 }
-
-
 
 
 
