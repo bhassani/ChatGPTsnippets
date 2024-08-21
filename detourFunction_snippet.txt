@@ -1,0 +1,25 @@
+void* _fnAddr;
+	BYTE* _gate;
+	FuncType _lambdaExpr;
+
+void DetourFunc(BYTE *src, const BYTE *dst, const int len)
+	{
+		BYTE *jmp = _gate;
+ 
+		memcpy(jmp, src, len);
+		jmp += len;
+		jmp[0] = 0xE9;
+		*(DWORD*)(jmp + 1) = (DWORD)(src + len - jmp) - 5;
+ 
+		DWORD dwback;
+		VirtualProtect(src, len, PAGE_EXECUTE_READWRITE, &dwback);
+ 
+		src[0] = 0xE9;
+		*(DWORD*)(src + 1) = (DWORD)(dst - src) - 5;
+ 
+		VirtualProtect(src, len, dwback, &dwback);
+	}
+
+
+
+
